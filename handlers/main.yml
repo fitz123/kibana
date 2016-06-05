@@ -1,17 +1,9 @@
 ---
 
-- name: "xl2tpd restart"
-  service: name=xl2tpd
+- name: restart {{ service_name }}
+  service: name={{ service_name }}
            state=restarted
 
-- name: "xl2tpd reload"
-  service: name=xl2tpd
-           state=reloaded
-
-- name: "keepalived restart"
-  service: name=keepalived
-           state=restarted
-
-- name: "keepalived reload"
-  service: name=keepalived
+- name: reload {{ service_name }}
+  service: name={{ service_name }}
            state=reloaded
