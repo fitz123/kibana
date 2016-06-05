@@ -2,18 +2,22 @@
 
 # switcher to enable/disable role
 # should be used in playbook or group/host variables to activate role
+# must be: {{ service_name }}_enabled
 kibana_enabled: no
 
 # files that will be processed by Jinja2 and installed from roles _templates_ directory
 # files hierarchy in a role have to be the same as in destination
 kibana_install_template: 
-  - { name: "xl2tpd.conf", dir: "etc/xl2tpd", after_update: "xl2tpd restart" }
+  - { name: "kibana.yml", dir: "opt/kibana/config", file_mode: "0644", dir_mode: "0751", after_update: "restart" }
+
+kibana_elasticsearch_host: "http://master.es.service.{{ dc }}.consul:9200"
+kibana_port: 5601
+kibana_listen_ip: '0.0.0.0'
 
 #################################################
 #
 # full options-example with default values and restart service after file update
 #
 # install_template:
-#   - { file: "filebeat.yml", dir: "etc/filebeat", file_owner: "root", file_group: "adm", file_mode: "0640", dir_owner: "root", dir_group: "adm", dir_mode: "0750", after_update: "restart" }
+#   - { name: "filebeat.yml", dir: "etc/filebeat", file_owner: "root", file_group: "adm", file_mode: "0640", dir_owner: "root", dir_group: "adm", dir_mode: "0750", after_update: "restart" }
 #
-

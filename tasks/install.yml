@@ -1,18 +1,21 @@
 ---
 
-- name: Upload patched xl2tpd version
-  copy: src={{ item }} dest=/tmp/{{ item }}
-  with_items:
-    - 'xl2tpd_1.3.7+dfsg-1_amd64.deb'
-
 - name: Check dependencies
   package: name={{ item }} state=present
   with_items:
-    - "{{ dependencies }}"
+    - "{{ dependencies | default ([]) }}"
 
-- name: Check patched xl2tpd installation
-  apt: deb=/tmp/xl2tpd_1.3.7+dfsg-1_amd64.deb state=present
+- name: Check repo keys
+  apt_key: url={{ item }} state=present
+  with_items:
+    - "{{ repo_keys | default ([]) }}"
 
-- name: Check keepalived for DR node
-  package: name=keepalived state=present
-  when: wohucanglong_node_type == 'DR'
+- name: Check repositories
+  apt_repository: repo={{ item }} state=present update_cache=yes #filename={{ service_name }}
+  with_items:
+    - "{{ repos | default ([]) }}"
+
+- name: Check app installation
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ install_packages | default ([]) }}"

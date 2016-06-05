@@ -1,23 +1,21 @@
 ---
 
 # must be real name of the system service
-service_name: "xl2tpd"
+service_name: "kibana"
 
-repos: []
+repos:
+  - "deb http://packages.elastic.co/kibana/4.5/debian stable main"
 
-repo_keys: []
+repo_keys: 
+  - "https://packages.elastic.co/GPG-KEY-elasticsearch"
 
 # installed before main packages
-dependencies: ['ppp']
+dependencies: []
 
-# Commands need to be executed during installation 
-# "commands" and "creates" are used
-install_commands: []
+# installed after dependencies
+install_packages:
+  - "{{ service_name }}"
 
-# Links need to be created
-# paramaters: "src" and "dest"
-install_links: []
-
-log:
-  dir: "/var/log"
-  file: "{{ service_name }}.log"
+#log:
+#  dir: "/var/log/{{ service_name }}"
+#  file: "{{ service_name }}"
