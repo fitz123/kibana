@@ -16,6 +16,6 @@ dependencies: []
 install_packages:
   - "{{ service_name }}"
 
-#log:
-#  dir: "/var/log/{{ service_name }}"
-#  file: "{{ service_name }}"
+log:
+  dir: "/var/log/kibana"
+  dir_owner: "kibana"
