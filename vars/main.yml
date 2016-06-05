@@ -1,0 +1,23 @@
+---
+
+# must be real name of the system service
+service_name: "xl2tpd"
+
+repos: []
+
+repo_keys: []
+
+# installed before main packages
+dependencies: ['ppp']
+
+# Commands need to be executed during installation 
+# "commands" and "creates" are used
+install_commands: []
+
+# Links need to be created
+# paramaters: "src" and "dest"
+install_links: []
+
+log:
+  dir: "/var/log"
+  file: "{{ service_name }}.log"

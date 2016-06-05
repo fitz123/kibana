@@ -1,0 +1,5 @@
+#!/bin/sh
+ip route add 192.168.0.0/16 scope global \
+{% for item in wohucanglong_transit_gw %}
+		nexthop via {{ item.gw | ipaddr('address') }} weight {{ item.weight | default('1') }} \
+{% endfor %}        

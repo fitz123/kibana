@@ -1,0 +1,29 @@
+---
+
+- name: Check templates
+  template: src={{ item.dir }}/{{ item.name }}.j2 dest=/{{ item.dir }}/{{ item.name }}
+            owner={{ item.file_owner | default('root') }} group={{ item.file_group | default('adm') }} mode={{ item.file_mode | default('0640') }}
+  with_items: 
+    - "{{ wohucanglong_install_template | default ([]) }}"
+  notify: "{{ item.after_update | default('') }}"
+
+- name: Allow connection to L2TP
+  ufw: rule=allow port=1701 proto=udp
+  when: wohucanglong_node_type == 'DR' or wohucanglong_node_type == 'TR'
+  tags: ufw
+
+- name: Allow routing via tunnel
+  ufw: rule=allow route=yes src=192.168.0.0/16 dest=192.168.0.0/16
+  when: wohucanglong_node_type == 'TR'
+  tags: ufw
+
+- name: Allow connection to Nimble
+  ufw: rule=allow port=8080 proto=tcp
+  when: wohucanglong_node_type == 'DR' or wohucanglong_node_type == 'RS'
+  tags: ufw
+
+## to do
+  # rp_filter on TR - yes,2
+  # rp_filter on RS? 0
+  # route to use gw on TR in network/interfaces
+  # tunl0 and tunl0:0 for RS
