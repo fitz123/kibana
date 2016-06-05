@@ -1,0 +1,19 @@
+---
+
+- include: install.yml
+  when: "wohucanglong_enabled"
+  tags: 
+    - "wohucanglong"
+
+- include: configure.yml
+  when: "wohucanglong_enabled"
+  tags: 
+    - "wohucanglong"
+    - "wohucanglong_conf"
+#
+#- name: Service is running and enabled
+#  service: name=xl2tpd state=running enabled=yes
+#  with_items:
+#    - "{{ service_name }}"
+#  tags: 
+#    - "{{ service_name }}"

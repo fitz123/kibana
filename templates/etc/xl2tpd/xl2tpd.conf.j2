@@ -1,0 +1,44 @@
+[global]
+port = 1701
+
+; server configuration (lns)
+{% if wohucanglong_node_type == 'TR' or wohucanglong_node_type == 'DR' %}
+[lns default]
+local ip = {{ wohucanglong_ip | ipaddr('address') }}
+{% if wohucanglong_node_type == 'TR' %}
+ip range = 192.168.1.2-192.168.1.4
+{% endif %}
+{% if wohucanglong_node_type == 'DR' %}
+ip range = 192.168.0.11-192.168.0.13
+assign ip = no
+{% endif %}
+require chap = yes
+refuse pap = yes
+require authentication = yes
+ppp debug = no
+pppoptfile = /etc/ppp/options.xl2tpd
+tunnel rws = 3000
+flow bit = no
+{% endif %}
+
+; client configuration (lac)
+{% if wohucanglong_node_type == 'TR' or wohucanglong_node_type == 'RS' %}
+{% for item in wohucanglong_lac %}
+[lac {{ item.name }}]
+lns = {{ item.lns }}
+{% if wohucanglong_node_type == 'TR' %}
+local ip = {{ item.local_ip }}
+{% endif %}
+autodial = yes
+redial = yes
+redial timeout = 10
+require chap = yes
+refuse pap = yes
+require authentication = yes
+name = user
+ppp debug = no
+pppoptfile = /etc/ppp/options.xl2tpd
+tunnel rws = 3000
+flow bit = no
+{% endfor %}
+{% endif %}
