@@ -13,6 +13,7 @@
 
 - name: Service is running and enabled
   service: name={{ service_name }} state=running enabled=yes
+  when: "{{ service_name }}_enabled"
   with_items:
     - "{{ service_name }}"
   tags: 
